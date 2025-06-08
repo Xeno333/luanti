@@ -14,6 +14,9 @@ ContentType getContentType(const std::string &path)
 	if (fs::IsFile(path + DIR_DELIM "modpack.txt") || fs::IsFile(path + DIR_DELIM "modpack.conf"))
 		return ContentType::MODPACK;
 
+	if (fs::IsFile(path + DIR_DELIM "mapgen.conf"))
+		return ContentType::MAPGEN;
+
 	if (fs::IsFile(path + DIR_DELIM "init.lua"))
 		return ContentType::MOD;
 
@@ -47,6 +50,11 @@ void parseContentInfo(ContentSpec &spec)
 		spec.type = "txp";
 		conf_path = spec.path + DIR_DELIM "texture_pack.conf";
 		break;
+	case ContentType::MAPGEN:
+		spec.type = "mapgen";
+		conf_path = spec.path + DIR_DELIM "mapgen.conf";
+		break;
+		
 	default:
 		spec.type = "unknown";
 		break;

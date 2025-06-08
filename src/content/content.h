@@ -12,7 +12,8 @@ enum class ContentType
 	MOD,
 	MODPACK,
 	GAME,
-	TXP
+	TXP,
+	MAPGEN
 };
 
 
