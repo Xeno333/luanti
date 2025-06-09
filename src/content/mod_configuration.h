@@ -66,6 +66,9 @@ public:
 	void addModsFromConfig(const std::string &settings_path,
 			const std::unordered_map<std::string, std::string> &modPaths);
 
+	void addMapgenFromConfig(const std::string &settings_path,
+			const std::unordered_map<std::string, std::string> &modPaths);
+
 	/**
 	 * Call this function once all mods have been added
 	 */
