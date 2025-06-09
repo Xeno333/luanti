@@ -593,7 +593,10 @@ int ModApiMainMenu::l_create_world(lua_State *L)
 
 	// Create world if it doesn't exist
 	try {
-		loadGameConfAndInitWorld(path, name, *game_it, true);
+		std::string lua_mapgen = "";
+		if (use_settings.find("lua_mapgen") != use_settings.end())
+			lua_mapgen = use_settings["lua_mapgen"];
+		loadGameConfAndInitWorld(path, name, *game_it, true, lua_mapgen);
 		lua_pushnil(L);
 	} catch (const BaseException &e) {
 		auto err = std::string("Failed to initialize world: ") + e.what();
@@ -697,6 +700,24 @@ int ModApiMainMenu::l_get_modpaths(lua_State *L)
 		lua_pushstring(L, component.c_str());
 		lua_setfield(L, -2, fs::AbsolutePath(component).c_str());
 	}
+	return 1;
+}
+
+/******************************************************************************/
+int ModApiMainMenu::l_get_lua_mapgen_names(lua_State *L)
+{
+	std::vector<ModSpec> addon_mods_in_path = flattenMods(getModsInPath(porting::path_share + DIR_DELIM + "mapgens" + DIR_DELIM, "mapgen/"));
+
+	if (!addon_mods_in_path.empty())
+		lua_newtable(L);
+
+	for (const auto &mod : addon_mods_in_path) {
+		if (mod.is_mapgen) {
+			lua_pushstring(L, mod.desc.c_str());
+			lua_setfield(L, -2, mod.name.c_str());
+		}
+	}
+
 	return 1;
 }
 
@@ -1062,6 +1083,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
+	API_FCT(get_lua_mapgen_names);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
 	API_FCT(get_texturepath);
@@ -1103,6 +1125,7 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
+	API_FCT(get_lua_mapgen_names);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
 	API_FCT(get_texturepath);

@@ -76,7 +76,12 @@ bool parseModContents(ModSpec &spec)
 
 
 	Settings info;
-	info.readConfigFile((spec.path + DIR_DELIM + "mod.conf").c_str());
+	if (fs::IsFile(spec.path + DIR_DELIM + "mapgen.conf")) {
+		info.readConfigFile((spec.path + DIR_DELIM + "mapgen.conf").c_str());
+		spec.is_mapgen = true;
+	}
+	else
+		info.readConfigFile((spec.path + DIR_DELIM + "mod.conf").c_str());
 
 	if (info.exists("name"))
 		spec.name = info.get("name");
@@ -90,7 +95,6 @@ bool parseModContents(ModSpec &spec)
 		spec.release = info.getS32("release");
 
 	if (!spec.is_mapgen) {
-		// Attempt to load dependencies from mod.conf
 		bool mod_conf_has_depends = false;
 		if (info.exists("depends")) {
 			mod_conf_has_depends = true;

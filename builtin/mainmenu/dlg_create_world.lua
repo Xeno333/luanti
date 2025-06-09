@@ -83,6 +83,16 @@ local function create_world_formspec(dialogdata)
 	local current_mg = dialogdata.mg
 	local mapgens = core.get_mapgen_names()
 
+	local lua_mapgens = core.get_lua_mapgen_names()
+	for k, v in pairs(lua_mapgens) do
+		mapgens[#mapgens+1] = k
+	end
+
+	local current_mg_true = dialogdata.mg
+	if lua_mapgens[current_mg_true] then
+		current_mg_true = "singlenode"
+	end
+
 	local flags = dialogdata.flags
 
 	local game = pkgmgr.find_by_gameid(core.settings:get("menu_last_game"))
@@ -254,7 +264,7 @@ local function create_world_formspec(dialogdata)
 	local str_flags, str_spflags
 	local label_flags, label_spflags = "", ""
 	y = y + 0.3
-	str_flags, y = mg_main_flags(current_mg, y)
+	str_flags, y = mg_main_flags(current_mg_true, y)
 	if str_flags ~= "" then
 		label_flags = "label[0,"..y_start..";" .. fgettext("Mapgen flags") .. "]"
 		y_start = y + 0.4
@@ -262,7 +272,7 @@ local function create_world_formspec(dialogdata)
 		y_start = 0.0
 	end
 	y = y_start + 0.3
-	str_spflags = mg_specific_flags(current_mg, y)
+	str_spflags = mg_specific_flags(current_mg_true, y)
 	if str_spflags ~= "" then
 		label_spflags = "label[0,"..y_start..";" .. fgettext("Mapgen-specific flags") .. "]"
 	end
@@ -371,10 +381,20 @@ local function create_world_buttonhandler(this, fields)
 			this.data.seed = fields["te_seed"] or ""
 			this.data.mg = fields["dd_mapgen"]
 
+			local mapgen_true = this.data.mg
+			local mapgen = nil
+
+			local lua_mapgens = core.get_lua_mapgen_names()
+			if lua_mapgens[this.data.mg] then
+				mapgen_true = "singlenode"
+				mapgen = this.data.mg
+			end
+
 			-- actual names as used by engine
 			local settings = {
 				fixed_map_seed = this.data.seed,
-				mg_name = this.data.mg,
+				mg_name = mapgen_true,
+				lua_mapgen = mapgen,
 				mg_flags = table_to_flags(this.data.flags.main),
 				mgv5_spflags = table_to_flags(this.data.flags.v5),
 				mgv6_spflags = table_to_flags(this.data.flags.v6),

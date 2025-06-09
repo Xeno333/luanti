@@ -130,7 +130,7 @@ void ModConfiguration::addMapgenFromConfig(
 	/*
 	 * Iterate through all installed mapgens
 	 *
-	 * If the mod is enabled, add it to `mapgen_mod`. * and break
+	 * If the mod is enabled, add it to `mapgen_mod` and break
 	 */
 	for (const auto &modPath : modPaths) {
 		std::vector<ModSpec> addon_mods_in_path = flattenMods(getModsInPath(modPath.second, modPath.first));

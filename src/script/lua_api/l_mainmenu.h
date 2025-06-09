@@ -99,6 +99,8 @@ private:
 
 	static int l_get_modpaths(lua_State *L);
 
+	static int l_get_lua_mapgen_names(lua_State *L);
+
 	static int l_get_clientmodpath(lua_State *L);
 
 	static int l_get_gamepath(lua_State *L);

@@ -343,7 +343,7 @@ std::vector<WorldSpec> getAvailableWorlds()
 }
 
 void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
-		const SubgameSpec &gamespec, bool create_world)
+		const SubgameSpec &gamespec, bool create_world, const std::string &lua_mapgen)
 {
 	std::string final_path = path;
 
@@ -392,6 +392,9 @@ void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
 			backend = "dummy";
 		}
 		conf.set("backend", backend);
+
+		if (lua_mapgen != "")
+			conf.set("mapgen", lua_mapgen);
 
 		conf.set("player_backend", "sqlite3");
 		conf.set("auth_backend", "sqlite3");
