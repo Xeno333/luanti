@@ -83,7 +83,7 @@ local function create_world_formspec(dialogdata)
 	local current_mg = dialogdata.mg
 	local mapgens = core.get_mapgen_names()
 
-	local lua_mapgens = core.get_lua_mapgen_names()
+	local lua_mapgens = core.get_lua_mapgen_descriptions()
 	for k, v in pairs(lua_mapgens) do
 		mapgens[#mapgens+1] = k
 	end
@@ -384,7 +384,7 @@ local function create_world_buttonhandler(this, fields)
 			local mapgen_true = this.data.mg
 			local mapgen = nil
 
-			local lua_mapgens = core.get_lua_mapgen_names()
+			local lua_mapgens = core.get_lua_mapgen_descriptions()
 			if lua_mapgens[this.data.mg] then
 				mapgen_true = "singlenode"
 				mapgen = this.data.mg

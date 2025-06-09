@@ -704,7 +704,8 @@ int ModApiMainMenu::l_get_modpaths(lua_State *L)
 }
 
 /******************************************************************************/
-int ModApiMainMenu::l_get_lua_mapgen_names(lua_State *L)
+// Needs docs when added and needs to be moved near get_mapgen_descriptions if merged
+int ModApiMainMenu::l_get_lua_mapgen_descriptions(lua_State *L)
 {
 	std::vector<ModSpec> addon_mods_in_path = flattenMods(getModsInPath(porting::path_share + DIR_DELIM + "mapgens" + DIR_DELIM, "mapgen/"));
 
@@ -1083,7 +1084,7 @@ void ModApiMainMenu::Initialize(lua_State *L, int top)
 	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
-	API_FCT(get_lua_mapgen_names);
+	API_FCT(get_lua_mapgen_descriptions);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
 	API_FCT(get_texturepath);
@@ -1125,7 +1126,7 @@ void ModApiMainMenu::InitializeAsync(lua_State *L, int top)
 	API_FCT(get_user_path);
 	API_FCT(get_modpath);
 	API_FCT(get_modpaths);
-	API_FCT(get_lua_mapgen_names);
+	API_FCT(get_lua_mapgen_descriptions);
 	API_FCT(get_clientmodpath);
 	API_FCT(get_gamepath);
 	API_FCT(get_texturepath);
